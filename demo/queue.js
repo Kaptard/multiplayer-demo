@@ -16,7 +16,7 @@ async function register (user, user_secret) {
  */
 async function queue () {
   // Register and login
-  console.log(`Registering as ${user}`)
+  console.log(`Registering as ${user}...`)
   const authUser = await register(user, 'test')
   console.log(`Registered with user key ${authUser.user_key} \n`)
   const client = new Client({
@@ -30,7 +30,6 @@ async function queue () {
   console.log('Found session:', sid, '\n')
 
   // Subscribe to session
-  console.log(sid)
   client.subscribe(sid, data => {
     console.log(data)
   })
@@ -48,12 +47,9 @@ async function prompt (client, sid) {
     message: 'Enter an action (e.g. place card_name)\n'
   })
   const action = input.split(' ')[0]
-
-  if (action === 'place') {
-    const card = input.split(' ')[1]
-    await client.post('/place', { sid, action: 'place', data: card })
-    console.log('\n')
-  }
+  const data = input.split(' ')[1]
+  await client.post('/action', { sid, action, data })
+  console.log('\n')
   prompt(client, sid)
 }
 

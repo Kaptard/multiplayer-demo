@@ -10,7 +10,7 @@ class Play extends Endpoint {
   async main (req, res) {
     const { action, data } = req.body
     this.publish({ user: req.user.uid, action, data }, req.body.sid)
-    res.send(`Placed ${req.body.card}`)
+    res.send(`${action}ed ${data}`)
   }
 }
 
